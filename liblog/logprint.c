@@ -775,11 +775,13 @@ char *android_log_formatLogLine (
     size_t prefixBufTmpRemainLen = sizeof(prefixBuf);
 
     if (p_format->colored_output == OUTPUT_COLOR_ON) {
-    prefixColorLen = snprintf(prefixBufTmp, prefixBufTmpRemainLen, "%c[%d;%d;%dm", 0x1B, 38, 5, colorFromPri(entry->priority));
-    if(prefixColorLen >= prefixBufTmpRemainLen)
-        prefixColorLen = prefixBufTmpRemainLen - 1;
-    prefixBufTmp += prefixColorLen;
-    prefixBufTmpRemainLen -= prefixColorLen;
+        prefixColorLen = snprintf(prefixBufTmp, prefixBufTmpRemainLen, "%c[%d;%d;%dm", 
+                0x1B, 38, 5, colorFromPri(entry->priority));
+        if(prefixColorLen >= prefixBufTmpRemainLen) {
+            prefixColorLen = prefixBufTmpRemainLen - 1;
+        }
+        prefixBufTmp += prefixColorLen;
+        prefixBufTmpRemainLen -= prefixColorLen;
     }
 
     switch (p_format->format) {
@@ -853,9 +855,10 @@ char *android_log_formatLogLine (
     size_t suffixBufTmpRemainLen = sizeof(suffixBuf) - suffixLen;
 
     if (p_format->colored_output == OUTPUT_COLOR_ON) {
-    suffixColorLen = snprintf(suffixBufTmp, suffixBufTmpRemainLen, "%c[%dm", 0x1B, 0);
-    if(suffixColorLen >= suffixBufTmpRemainLen)
-        suffixColorLen = suffixBufTmpRemainLen - 1;
+        suffixColorLen = snprintf(suffixBufTmp, suffixBufTmpRemainLen, "%c[%dm", 0x1B, 0);
+        if(suffixColorLen >= suffixBufTmpRemainLen) {
+            suffixColorLen = suffixBufTmpRemainLen - 1;
+        }
     }
 
 
